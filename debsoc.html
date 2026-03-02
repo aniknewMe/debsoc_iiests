@@ -1,0 +1,915 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debating Society IIEST Shibpur</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    .font-display { font-family: 'Playfair Display', serif; }
+    .font-accent { font-family: 'Crimson Text', serif; }
+    .font-body { font-family: 'Poppins', sans-serif; }
+    
+     nav {
+    font-family: 'Playfair Display', serif;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(3deg); }
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-slide-up { animation: slideUp 0.8s ease-out forwards; }
+    .animate-fade-in { animation: fadeIn 1s ease-out forwards; }
+    
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+    .stagger-4 { animation-delay: 0.4s; }
+    
+    .pattern-bg {
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(128, 0, 32, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(218, 165, 32, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(128, 0, 32, 0.03) 0%, transparent 70%);
+    }
+    
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 50px -12px rgba(128, 0, 32, 0.25);
+    }
+    
+    .btn-primary {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+    
+    .quote-mark {
+      font-size: 8rem;
+      line-height: 0;
+      opacity: 0.1;
+    }
+
+    .debater-container {
+      perspective: 1000px;
+    }
+
+    .debater {
+      animation: debate-bounce 3s ease-in-out infinite;
+    }
+
+    .debater:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes debate-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .speech-bubble {
+      animation: bubble-float 2s ease-in-out infinite;
+    }
+
+    @keyframes bubble-float {
+      0%, 100% { opacity: 0.6; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    /* PAGE SYSTEM */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+      animation: pageIn 0.5s ease-out forwards;
+    }
+
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .gallery-item {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .carousel {
+      position: relative;
+    }
+
+    .carousel-item {
+      position: absolute;
+      width: 320px;
+      height: 220px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      border-radius: 45px;
+      overflow: hidden;
+      transition: all 1s ease;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-item.center {
+      transform: translate(-50%, -50%) scale(1.2);
+      z-index: 3;
+      opacity: 1;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    }
+
+    .carousel-item.left {
+      transform: translate(-150%, -50%) scale(0.8);
+      opacity: 0.6;
+      z-index: 2;
+    }
+
+    .carousel-item.right {
+      transform: translate(50%, -50%) scale(0.8);
+      opacity: 0.6;
+      z-index: 2;
+    }
+
+    /* ABOUT CAROUSEL */
+    .about-carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .about-carousel .carousel-item {
+      position: absolute;
+      width: 320px;
+      height: 220px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      opacity: 0;
+      transition: all 0.7s ease;
+      border-radius: 24px;
+    }
+
+    .about-carousel .carousel-item.center {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      z-index: 3;
+    }
+
+    .about-carousel .carousel-item.left {
+      transform: translate(-130%, -50%) scale(0.75);
+      opacity: 0.6;
+      z-index: 2;
+    }
+
+    .about-carousel .carousel-item.right {
+      transform: translate(30%, -50%) scale(0.75);
+      opacity: 0.6;
+      z-index: 2;
+    }
+    .footer-heading {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.footer-heading::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: #DAA520;
+}
+
+.footer-heading::before {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: -6px;
+  width: 8px;
+  height: 8px;
+  background: #DAA520;
+  border-radius: 50%;
+}
+
+.footer-heading span.dot-right {
+  position: absolute;
+  bottom: -4px;
+  right: -6px;
+  width: 8px;
+  height: 8px;
+  background: #DAA520;
+  border-radius: 50%;
+}
+
+/* ===== NAV GLASS EFFECT ===== */
+
+.nav-btn {
+  position: relative;
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #FAF7F2;
+  font-size: 14px;
+  font-weight: 500;
+
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  transition: all 0.4s ease-in-out;
+}
+
+/* Hover Glow */
+.nav-btn:hover {
+  background: rgba(218, 165, 32, 0.15);
+  border-color: #DAA520;
+
+  box-shadow:
+    0 0 10px rgba(218,165,32,0.6),
+    0 0 20px rgba(218,165,32,0.4),
+    0 0 30px rgba(218,165,32,0.2);
+
+  transform: translateY(-2px);
+}
+
+/* Active Page Glow */
+.nav-btn.active-nav {
+  background: rgba(218,165,32,0.2);
+  border-color: #DAA520;
+  box-shadow: 0 0 15px rgba(218,165,32,0.5);
+}
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 8px rgba(218,165,32,0.4); }
+  50% { box-shadow: 0 0 18px rgba(218,165,32,0.7); }
+  100% { box-shadow: 0 0 8px rgba(218,165,32,0.4); }
+}
+
+.nav-btn:hover {
+  animation: glowPulse 1.5s infinite ease-in-out;
+}
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full font-body overflow-auto" style="background-color: #FAF7F2;">
+  <div class="w-full h-full pattern-bg">
+
+<!-- Navigation -->
+<nav class="w-full px-6 py-2 animate-fade-in sticky top-0 z-50"
+     style="background: linear-gradient(135deg, #800020 0%, #5c0017 100%);">
+
+  <div class="max-w-6xl mx-auto flex items-center justify-between">
+
+    <!-- LEFT SIDE -->
+    <div class="flex items-center gap-4">
+
+      <!-- Logo -->
+      <img src="debsoclogo.jpeg"
+           alt="DEBSOC Logo"
+           class="h-12 w-auto object-contain">
+
+      <!-- Title -->
+      <div id="nav-title"
+           class="font-display leading-tight"
+           style="color:#FAF7F2; letter-spacing:1px;">
+        <div class="text-lg font-semibold">
+          THE DEBATING SOCIETY OF
+        </div>
+        <div class="text-xl font-bold">
+          IIEST-SHIBPUR
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DESKTOP NAV -->
+    <div class="hidden md:flex items-center gap-6">
+
+      <button onclick="showPage('home')" 
+      class="nav-btn flex items-center gap-1">
+        Home
+      </button>
+
+      <button onclick="scrollToAbout()"
+        class="nav-btn flex items-center gap-1">
+        About Us
+      </button>
+
+      <div class="relative group">
+        <button class="nav-btn flex items-center gap-1">
+          Events
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </button>
+
+        <div class="absolute left-0 mt-1 w-40 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all"
+             style="background-color:#FAF7F2;">
+             <button onclick="showPage('becon')" class="w-full text-left px-4 py-2 text-sm hover:opacity-70"
+                  style="color:#800020;">BECON</button>
+          <button onclick="showPage('events')" class="w-full text-left px-4 py-2 text-sm hover:opacity-70"
+                  style="color:#800020;">MAIN EVENTS</button>
+          
+        </div>
+      </div>
+
+      <button onclick="showPage('gallery')"
+        class="nav-btn flex items-center gap-1">
+        Gallery
+      </button>
+
+      <button onclick="showPage('tribunal')"
+        class="nav-btn flex items-center gap-1">
+        The Tribunal
+      </button>
+
+      <button onclick="showPage('team')"
+        class="nav-btn flex items-center gap-1">
+        Team
+      </button>
+
+      <button onclick="showPage('contact')"
+        class="px-5 py-2 rounded-full text-sm font-semibold transition hover:scale-105"
+        style="background:#DAA520; color:#800020;">
+        Contact
+      </button>
+
+    </div>
+
+    <!-- MOBILE HAMBURGER -->
+    <button id="hamburger-btn"
+            onclick="toggleMobileMenu()"
+            class="md:hidden"
+            style="color:#FAF7F2;">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div id="mobile-menu" class="md:hidden hidden flex-col pb-4 pt-2 gap-1">
+
+    <button onclick="showPage('home'); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm rounded-lg hover:opacity-80"
+      style="color:#FAF7F2;">🏠 Home</button>
+
+    <button onclick="scrollToAbout(); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm rounded-lg hover:opacity-80"
+      style="color:#FAF7F2;">ℹ️ About Us</button>
+
+    <button onclick="showPage('events'); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm rounded-lg hover:opacity-80"
+      style="color:#FAF7F2;">🎤 Main Events</button>
+
+    <button onclick="showPage('becon'); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm rounded-lg hover:opacity-80"
+      style="color:#FAF7F2;">✨ Becon</button>
+
+    <button onclick="showPage('gallery'); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm rounded-lg hover:opacity-80"
+      style="color:#FAF7F2;">🖼 Gallery</button>
+
+    <button onclick="showPage('tribunal'); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm rounded-lg hover:opacity-80"
+      style="color:#FAF7F2;">⚖ Tribunal</button>
+
+    <button onclick="showPage('team'); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm rounded-lg hover:opacity-80"
+      style="color:#FAF7F2;">👥 Team</button>
+
+    <button onclick="showPage('contact'); toggleMobileMenu()"
+      class="w-full text-left px-4 py-3 text-sm mt-2 rounded-full"
+      style="background:#DAA520; color:#800020; margin:0 1rem;">
+      📬 Contact
+    </button>
+
+  </div>
+
+</nav>
+    <!-- ===================== HOME PAGE ===================== -->
+    <section class="page active" id="home-page">
+
+      <!-- Hero Section -->
+      <div class="relative px-6 py-20 overflow-hidden">
+        <!-- Watermark Logo -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
+          <img src="debsoclogo.jpeg" class="w-[600px] object-contain">
+        </div>
+        <div class="absolute top-10 right-10 w-32 h-32 rounded-full opacity-20 animate-float" style="background-color: #DAA520;"></div>
+        <div class="absolute bottom-20 left-10 w-24 h-24 rounded-full opacity-10 animate-float" style="background-color: #800020; animation-delay: 2s;"></div>
+
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          <div class="opacity-0 animate-slide-up">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style="background-color: rgba(128, 0, 32, 0.1);">
+              <span class="w-2 h-2 rounded-full" style="background-color: #DAA520;"></span>
+              <span class="text-sm font-medium" style="color: #800020;">Est. 2009</span>
+            </div>
+            <h1 id="hero-title" class="font-display font-bold text-5xl lg:text-7xl leading-tight mb-6" style="color: #800020;">DEB-SOC<br><span style="color: #DAA520;">IIEST Shibpur</span></h1>
+            <p id="hero-tagline" class="font-accent text-2xl mb-8 leading-relaxed italic" style="color: #5c4a3d;">"Can't Debate without offending"</p>
+            <div class="flex flex-wrap gap-4">
+              <button onclick="showPage('events')" class="btn-primary inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold transition-all hover:scale-105" style="background-color: #800020; color: #FAF7F2;">Explore Events 
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+              <button onclick="showPage('contact')" class="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold border-2 transition-all hover:scale-105" style="border-color: #800020; color: #800020;">Get in Touch</button>
+            </div>
+          </div>
+
+          <div class="relative opacity-0 animate-slide-up stagger-2">
+            <div class="relative w-full h-96 flex items-center justify-center overflow-hidden">
+              <div class="carousel hero-carousel relative w-full max-w-4xl h-80">
+                <div class="carousel-item"><img src="ASHdebsoc.jpeg" class="rounded-2xl shadow-2xl"></div>
+                <div class="carousel-item"><img src="People.jpeg" class="rounded-2xl shadow-2xl"></div>
+                <div class="carousel-item"><img src="DebsocMeet.jpeg" class="rounded-2xl shadow-2xl"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="absolute bottom-2 left-7">
+          <div class="px-8 py-3 rounded-full font-accent italic text-lg" style="background-color: rgba(218, 165, 32, 0.18); color: #800020;">
+            "Forged in dialogue, strengthened through dissent."
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT US SECTION — inside home page only -->
+      <div id="about-section" class="px-6 py-24 pattern-bg" style="background-color: #FAF7F2;">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+
+          <!-- LEFT SIDE - Carousel -->
+          <div class="relative h-[400px] flex items-center justify-center">
+            <div class="about-carousel relative w-full h-full">
+              <div class="carousel-item"><img src="photo1.jpg" class="w-full h-full object-cover rounded-3xl shadow-2xl"></div>
+              <div class="carousel-item"><img src="photo2.jpg" class="w-full h-full object-cover rounded-3xl shadow-2xl"></div>
+              <div class="carousel-item"><img src="photo3.jpg" class="w-full h-full object-cover rounded-3xl shadow-2xl"></div>
+              <div class="carousel-item"><img src="photo4.jpg" class="w-full h-full object-cover rounded-3xl shadow-2xl"></div>
+              <div class="carousel-item"><img src="photo5.jpg" class="w-full h-full object-cover rounded-3xl shadow-2xl"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDE - Text -->
+          <div>
+            <h2 class="font-display text-4xl mb-6 relative inline-block" style="color: #800020;">
+              About Us
+              <span class="absolute left-0 -bottom-3 w-full h-[2px]" style="background-color: #DAA520;"></span>
+              <span class="absolute right-[-10px] -bottom-[9px] w-3 h-3 rounded-full" style="background-color: #DAA520;"></span>
+            </h2>
+
+            <p class="font-accent text-lg leading-relaxed mt-8" style="color: #5c4a3d;">
+              Welcome to DEBSOC, the heartbeat of discourse at IIEST Shibpur. 
+              Here, minds don't just meet they ignite.
+              We invite you to embark on a journey where intellect is the compass, eloquence is the craft, and rhetoric is elevated to an art form.
+            </p>
+
+            <p class="font-accent text-lg leading-relaxed mt-6" style="color: #5c4a3d;">
+              Beyond the podium, we offer a sanctuary for the curious to sharpen their wit and master the power of persuasion. 
+              Join our league of thinkers and let your voice echo through the corridors of discovery.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+    <!-- ===================== END HOME PAGE ===================== -->
+
+
+    <!-- EVENTS PAGE -->
+    <section class="px-6 py-20 page" id="events-page">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="font-display font-bold text-5xl mb-12" style="color: #800020;">Our Events</h1>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="card-hover rounded-2xl p-8 opacity-0 animate-slide-up" style="background-color: #FFFFFF; border: 2px solid #800020;">
+            <div class="text-5xl mb-4">🎤</div>
+            <h3 class="font-display font-bold text-2xl mb-3" style="color: #800020;">Championship Debates</h3>
+            <p style="color: #5c4a3d;" class="mb-4">Quarterly championships featuring the finest debaters competing across multiple formats.</p>
+            <div class="text-sm font-semibold" style="color: #DAA520;">March, June, September, December</div>
+          </div>
+          <div class="card-hover rounded-2xl p-8 opacity-0 animate-slide-up stagger-1" style="background-color: #FFFFFF; border: 2px solid #DAA520;">
+            <div class="text-5xl mb-4">🏛️</div>
+            <h3 class="font-display font-bold text-2xl mb-3" style="color: #800020;">Parliamentary Format</h3>
+            <p style="color: #5c4a3d;" class="mb-4">Experience the thrill of live parliamentary debates with real-time motion responses.</p>
+            <div class="text-sm font-semibold" style="color: #DAA520;">Every Friday</div>
+          </div>
+          <div class="card-hover rounded-2xl p-8 opacity-0 animate-slide-up stagger-2" style="background-color: #FFFFFF; border: 2px solid #800020;">
+            <div class="text-5xl mb-4">🎓</div>
+            <h3 class="font-display font-bold text-2xl mb-3" style="color: #800020;">Workshops &amp; Seminars</h3>
+            <p style="color: #5c4a3d;" class="mb-4">Learn from expert debaters and rhetorical masters in interactive sessions.</p>
+            <div class="text-sm font-semibold" style="color: #DAA520;">Bi-weekly</div>
+          </div>
+          <div class="card-hover rounded-2xl p-8 opacity-0 animate-slide-up stagger-3" style="background-color: #FFFFFF; border: 2px solid #DAA520;">
+            <div class="text-5xl mb-4">🌟</div>
+            <h3 class="font-display font-bold text-2xl mb-3" style="color: #800020;">Inter-College Meets</h3>
+            <p style="color: #5c4a3d;" class="mb-4">Compete with debaters from colleges across the state and nation.</p>
+            <div class="text-sm font-semibold" style="color: #DAA520;">Throughout the year</div>
+          </div>
+          <div class="card-hover rounded-2xl p-8 opacity-0 animate-slide-up stagger-4" style="background-color: #FFFFFF; border: 2px solid #800020;">
+            <div class="text-5xl mb-4">👥</div>
+            <h3 class="font-display font-bold text-2xl mb-3" style="color: #800020;">Mentorship Program</h3>
+            <p style="color: #5c4a3d;" class="mb-4">Get personalized coaching from senior debaters and champions.</p>
+            <div class="text-sm font-semibold" style="color: #DAA520;">One-on-one</div>
+          </div>
+          <div class="card-hover rounded-2xl p-8 opacity-0 animate-slide-up stagger-5" style="background-color: #FFFFFF; border: 2px solid #DAA520;">
+            <div class="text-5xl mb-4">🎬</div>
+            <h3 class="font-display font-bold text-2xl mb-3" style="color: #800020;">Social Events</h3>
+            <p style="color: #5c4a3d;" class="mb-4">Unwind with fellow debaters at our regular social gatherings and celebrations.</p>
+            <div class="text-sm font-semibold" style="color: #DAA520;">Monthly</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BECON PAGE -->
+    <section class="px-6 py-20 page" id="becon-page" style="background-color: rgba(128, 0, 32, 0.05);">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="font-display font-bold text-5xl mb-8" style="color: #800020;">Becon</h1>
+        <p class="font-accent text-2xl italic mb-12" style="color: #5c4a3d;">The future awaits here...</p>
+        <div class="rounded-2xl p-16 opacity-0 animate-slide-up" style="background: linear-gradient(135deg, #800020 0%, #5c0017 100%);">
+          <div class="text-6xl mb-8">✨</div>
+          <p class="text-xl opacity-90" style="color: #FAF7F2;">Coming soon with exciting developments and opportunities</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY PAGE -->
+    <section class="px-6 py-20 page" id="gallery-page">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="font-display font-bold text-5xl mb-12" style="color: #800020;">Our Gallery</h1>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="gallery-item card-hover rounded-2xl overflow-hidden h-64 flex items-center justify-center cursor-pointer opacity-0 animate-slide-up" style="background: linear-gradient(135deg, #800020 0%, #5c0017 100%);">
+            <div class="text-center"><div class="text-6xl mb-4">🎤</div><h3 class="font-display font-bold text-xl" style="color: #FAF7F2;">Championship 2024</h3></div>
+          </div>
+          <div class="gallery-item card-hover rounded-2xl overflow-hidden h-64 flex items-center justify-center cursor-pointer opacity-0 animate-slide-up stagger-1" style="background: linear-gradient(135deg, #DAA520 0%, #c49318 100%);">
+            <div class="text-center"><div class="text-6xl mb-4">🏆</div><h3 class="font-display font-bold text-xl" style="color: #800020;">Trophy Moments</h3></div>
+          </div>
+          <div class="gallery-item card-hover rounded-2xl overflow-hidden h-64 flex items-center justify-center cursor-pointer opacity-0 animate-slide-up stagger-2" style="background: linear-gradient(135deg, #800020 0%, #DAA520 100%);">
+            <div class="text-center"><div class="text-6xl mb-4">👥</div><h3 class="font-display font-bold text-xl" style="color: #FAF7F2;">Team Events</h3></div>
+          </div>
+          <div class="gallery-item card-hover rounded-2xl overflow-hidden h-64 flex items-center justify-center cursor-pointer opacity-0 animate-slide-up stagger-3" style="background: linear-gradient(135deg, #5c0017 0%, #800020 100%);">
+            <div class="text-center"><div class="text-6xl mb-4">🎓</div><h3 class="font-display font-bold text-xl" style="color: #FAF7F2;">Workshops</h3></div>
+          </div>
+          <div class="gallery-item card-hover rounded-2xl overflow-hidden h-64 flex items-center justify-center cursor-pointer opacity-0 animate-slide-up stagger-4" style="background: linear-gradient(135deg, #DAA520 0%, #800020 100%);">
+            <div class="text-center"><div class="text-6xl mb-4">🌟</div><h3 class="font-display font-bold text-xl" style="color: #FAF7F2;">Star Performers</h3></div>
+          </div>
+          <div class="gallery-item card-hover rounded-2xl overflow-hidden h-64 flex items-center justify-center cursor-pointer opacity-0 animate-slide-up stagger-5" style="background: linear-gradient(135deg, #800020 0%, #DAA520 100%);">
+            <div class="text-center"><div class="text-6xl mb-4">🎉</div><h3 class="font-display font-bold text-xl" style="color: #FAF7F2;">Celebrations</h3></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRIBUNAL PAGE -->
+    <section class="px-6 py-20 page" id="tribunal-page" style="background-color: rgba(128, 0, 32, 0.05);">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="font-display font-bold text-5xl mb-12 text-center" style="color: #800020;">The Tribunal</h1>
+        <p class="text-center text-lg mb-16 max-w-2xl mx-auto" style="color: #5c4a3d;">Meet the leadership guiding our society with vision and excellence</p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="card-hover rounded-2xl p-8 text-center opacity-0 animate-slide-up" style="background-color: #FFFFFF; border: 2px solid #800020;">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center text-6xl mx-auto mb-6" style="background: linear-gradient(135deg, #800020 0%, #5c0017 100%);">👨‍💼</div>
+            <h3 class="font-display font-bold text-2xl mb-2" style="color: #800020;">President</h3>
+            <p class="font-accent italic mb-3" style="color: #DAA520;">Chief Visionary</p>
+            <p style="color: #5c4a3d;">Leading with passion and strategic insight</p>
+          </div>
+          <div class="card-hover rounded-2xl p-8 text-center opacity-0 animate-slide-up stagger-1" style="background-color: #FFFFFF; border: 2px solid #DAA520;">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center text-6xl mx-auto mb-6" style="background: linear-gradient(135deg, #DAA520 0%, #c49318 100%);">👩‍💼</div>
+            <h3 class="font-display font-bold text-2xl mb-2" style="color: #800020;">Vice President</h3>
+            <p class="font-accent italic mb-3" style="color: #DAA520;">Strategic Coordinator</p>
+            <p style="color: #5c4a3d;">Ensuring smooth execution of all initiatives</p>
+          </div>
+          <div class="card-hover rounded-2xl p-8 text-center opacity-0 animate-slide-up stagger-2" style="background-color: #FFFFFF; border: 2px solid #800020;">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center text-6xl mx-auto mb-6" style="background: linear-gradient(135deg, #800020 0%, #DAA520 100%);">📝</div>
+            <h3 class="font-display font-bold text-2xl mb-2" style="color: #800020;">General Secretary</h3>
+            <p class="font-accent italic mb-3" style="color: #DAA520;">Administrative Head</p>
+            <p style="color: #5c4a3d;">Managing records and official communications</p>
+          </div>
+          <div class="card-hover rounded-2xl p-8 text-center opacity-0 animate-slide-up stagger-3" style="background-color: #FFFFFF; border: 2px solid #DAA520;">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center text-6xl mx-auto mb-6" style="background: linear-gradient(135deg, #DAA520 0%, #800020 100%);">💰</div>
+            <h3 class="font-display font-bold text-2xl mb-2" style="color: #800020;">Treasurer</h3>
+            <p class="font-accent italic mb-3" style="color: #DAA520;">Financial Manager</p>
+            <p style="color: #5c4a3d;">Overseeing budgets and financial planning</p>
+          </div>
+          <div class="card-hover rounded-2xl p-8 text-center opacity-0 animate-slide-up stagger-4" style="background-color: #FFFFFF; border: 2px solid #800020;">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center text-6xl mx-auto mb-6" style="background: linear-gradient(135deg, #800020 0%, #5c0017 100%);">🎯</div>
+            <h3 class="font-display font-bold text-2xl mb-2" style="color: #800020;">Events Head</h3>
+            <p class="font-accent italic mb-3" style="color: #DAA520;">Experience Curator</p>
+            <p style="color: #5c4a3d;">Organizing engaging events and competitions</p>
+          </div>
+          <div class="card-hover rounded-2xl p-8 text-center opacity-0 animate-slide-up stagger-5" style="background-color: #FFFFFF; border: 2px solid #DAA520;">
+            <div class="w-24 h-24 rounded-full flex items-center justify-center text-6xl mx-auto mb-6" style="background: linear-gradient(135deg, #DAA520 0%, #c49318 100%);">📱</div>
+            <h3 class="font-display font-bold text-2xl mb-2" style="color: #800020;">Social Media Head</h3>
+            <p class="font-accent italic mb-3" style="color: #DAA520;">Digital Voice</p>
+            <p style="color: #5c4a3d;">Amplifying our message across platforms</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM PAGE -->
+    <section class="px-6 py-20 page" id="team-page">
+      <div class="max-w-6xl mx-auto">
+        <h1 class="font-display font-bold text-5xl mb-12 text-center" style="color: #800020;">Meet Our Team</h1>
+        <p class="text-center text-lg mb-16 max-w-2xl mx-auto" style="color: #5c4a3d;">A diverse group of passionate debaters united by their love for eloquent discourse</p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #800020 0%, #5c0017 100%);">🎤</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Eloquent Speaker</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">Master orator and argumentation expert</p>
+          </div>
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up stagger-1" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #DAA520 0%, #c49318 100%);">🏆</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Trophy Winner</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">National champion and competition finalist</p>
+          </div>
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up stagger-2" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #800020 0%, #DAA520 100%);">💡</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Strategic Thinker</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">Arguments architect and case builder</p>
+          </div>
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up stagger-3" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #5c0017 0%, #800020 100%);">🌟</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Rising Star</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">Promising new talent and future champion</p>
+          </div>
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up stagger-4" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #DAA520 0%, #800020 100%);">👥</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Team Player</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">Collaborative spirit and passionate advocate</p>
+          </div>
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up stagger-5" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #800020 0%, #c49318 100%);">🎯</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Focused Leader</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">Inspiring others and setting standards</p>
+          </div>
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up stagger-6" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #DAA520 0%, #c49318 100%);">📚</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Research Master</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">Knowledge keeper and research specialist</p>
+          </div>
+          <div class="card-hover rounded-2xl p-6 text-center opacity-0 animate-slide-up stagger-7" style="background-color: #FFFFFF; border: 1px solid rgba(128, 0, 32, 0.2);">
+            <div class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto mb-4" style="background: linear-gradient(135deg, #5c0017 0%, #DAA520 100%);">✨</div>
+            <h4 class="font-display font-bold text-lg" style="color: #800020;">Natural Performer</h4>
+            <p class="text-sm mt-2" style="color: #5c4a3d;">Charismatic presence and crowd engager</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT PAGE -->
+    <section class="px-6 py-20 page" id="contact-page" style="background-color: rgba(128, 0, 32, 0.05);">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="font-display font-bold text-5xl mb-4 text-center" style="color: #800020;">Get In Touch</h1>
+        <p class="text-center text-lg mb-12 max-w-2xl mx-auto" style="color: #5c4a3d;">We'd love to hear from you. Connect with us to learn more or get involved!</p>
+        <div class="grid md:grid-cols-2 gap-12 mb-12">
+          <div class="rounded-2xl p-8 opacity-0 animate-slide-up" style="background-color: #FFFFFF; border: 2px solid #800020;">
+            <h3 class="font-display font-bold text-2xl mb-6" style="color: #800020;">Contact Info</h3>
+            <div class="space-y-6">
+              <div class="flex gap-4">
+                <div class="text-3xl">📍</div>
+                <div>
+                  <p class="font-semibold" style="color: #800020;">Location</p>
+                  <p style="color: #5c4a3d;">IIEST Shibpur, Howrah, West Bengal</p>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <div class="text-3xl">📧</div>
+                <div>
+                  <p class="font-semibold" style="color: #800020;">Email</p>
+                  <p style="color: #5c4a3d;">debate@iiest.ac.in</p>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <div class="text-3xl">📱</div>
+                <div>
+                  <p class="font-semibold" style="color: #800020;">Phone</p>
+                  <p style="color: #5c4a3d;">+91 XXXX-XXX-XXX</p>
+                </div>
+              </div>
+              <div class="flex gap-4">
+                <div class="text-3xl">🕐</div>
+                <div>
+                  <p class="font-semibold" style="color: #800020;">Office Hours</p>
+                  <p style="color: #5c4a3d;">Mon - Fri: 4:00 PM - 6:00 PM</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl p-8 opacity-0 animate-slide-up stagger-1" style="background-color: #FFFFFF; border: 2px solid #DAA520;">
+            <h3 class="font-display font-bold text-2xl mb-6" style="color: #800020;">Send a Message</h3>
+            <form onsubmit="handleSubmit(event)" class="space-y-4">
+              <div>
+                <label class="block text-sm font-semibold mb-2" style="color: #800020;">Name</label>
+                <input type="text" placeholder="Your name" required class="w-full px-4 py-3 rounded-lg border-2" style="border-color: #DAA520;">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold mb-2" style="color: #800020;">Email</label>
+                <input type="email" placeholder="your@email.com" required class="w-full px-4 py-3 rounded-lg border-2" style="border-color: #DAA520;">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold mb-2" style="color: #800020;">Message</label>
+                <textarea placeholder="Your message..." rows="4" required class="w-full px-4 py-3 rounded-lg border-2" style="border-color: #DAA520;"></textarea>
+              </div>
+              <button type="submit" class="w-full py-3 rounded-lg font-bold transition-all hover:scale-105" style="background-color: #800020; color: #FAF7F2;">Send Message</button>
+            </form>
+          </div>
+        </div>
+        <div class="text-center pt-8 border-t-2" style="border-color: #DAA520;">
+          <h4 class="font-display font-bold text-xl mb-6" style="color: #800020;">Follow Us</h4>
+          <div class="flex gap-6 justify-center">
+            <a href="#" class="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background-color: #800020; color: #FAF7F2;">f</a>
+            <a href="#" class="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background-color: #800020; color: #FAF7F2;">𝕏</a>
+            <a href="#" class="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background-color: #800020; color: #FAF7F2;">in</a>
+            <a href="#" class="w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background-color: #800020; color: #FAF7F2;">📷</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="px-6 py-12" style="background-color: #1a0008;">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+          <div class="md:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <img src="debsoclogo.jpeg" alt="DEBSOC Logo" class="h-12 w-auto object-contain">
+              <span class="font-display font-bold text-lg footer-heading"
+                  style="color: #FAF7F2;">
+              DEB-SOC
+              <span class="dot-right"></span>
+            </span>
+            </div>
+            <p class="text-sm opacity-70 max-w-xs" style="color: #FAF7F2;">A community dedicated to the synthesis of technical precision and humanistic inquiry. Through debates and formal discourse, we equip the scholars with the cognitive agility to dissect multifaceted issues and defend truth through reasoned conviction.</p>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4 footer-heading" style="color: #DAA520;">
+                Quick Links
+                <span class="dot-right"></span>
+              </h4>
+            <ul class="space-y-2 text-sm">
+              <li><button onclick="showPage('home')" class="opacity-70 hover:opacity-100 transition-opacity" style="color: #FAF7F2; background: none; border: none; cursor: pointer;">Home</button></li>
+              <li><button onclick="showPage('events')" class="opacity-70 hover:opacity-100 transition-opacity" style="color: #FAF7F2; background: none; border: none; cursor: pointer;">Events</button></li>
+              <li><button onclick="showPage('tribunal')" class="opacity-70 hover:opacity-100 transition-opacity" style="color: #FAF7F2; background: none; border: none; cursor: pointer;">Tribunal</button></li>
+              <li><button onclick="showPage('contact')" class="opacity-70 hover:opacity-100 transition-opacity" style="color: #FAF7F2; background: none; border: none; cursor: pointer;">Contact</button></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold mb-4 footer-heading" style="color: #DAA520;">
+              Connect
+              <span class="dot-right"></span>
+            </h4>
+            <div class="flex gap-3">
+              <a href="https://www.instagram.com/debsoc_iiests" target="_blank" class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background-color: rgba(218, 165, 32, 0.2);">
+                <svg class="w-5 h-5" fill="#DAA520" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a href="#"class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background-color: rgba(218, 165, 32, 0.2);">
+                <svg class="w-5 h-5" fill="#DAA520" viewbox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+              <a href="https://www.linkedin.com/company/debsoc-iiest-shibpur/" target="_blank"  class="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110" style="background-color: rgba(218, 165, 32, 0.2);">
+                <svg class="w-5 h-5" fill="#DAA520" viewbox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="pt-8 border-t text-center" style="border-color: rgba(218, 165, 32, 0.2);">
+          <p class="text-sm opacity-60" style="color: #FAF7F2;">© 2025 The Debating Society. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('flex');
+    }
+
+    function showPage(pageName) {
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+
+      const pageMap = {
+        'home': 'home-page',
+        'events': 'events-page',
+        'becon': 'becon-page',
+        'gallery': 'gallery-page',
+        'tribunal': 'tribunal-page',
+        'team': 'team-page',
+        'contact': 'contact-page'
+      };
+
+      const pageId = pageMap[pageName];
+      if (pageId) {
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function scrollToAbout() {
+      // Make sure home page is active first
+      showPage('home');
+      // Wait for page transition then scroll to about section
+      setTimeout(() => {
+        const aboutSection = document.getElementById('about-section');
+        if (aboutSection) {
+          aboutSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      alert('Thank you for your message! We will get back to you soon.');
+      event.target.reset();
+    }
+
+    // UNIVERSAL CAROUSEL INIT
+    function initCarousel(containerSelector) {
+      const container = document.querySelector(containerSelector);
+      if (!container) return;
+
+      const items = container.querySelectorAll('.carousel-item');
+      let current = 0;
+
+      function updateCarousel() {
+        items.forEach((item, index) => {
+          item.classList.remove('left', 'center', 'right');
+          if (index === current) {
+            item.classList.add('center');
+          } else if (index === (current - 1 + items.length) % items.length) {
+            item.classList.add('left');
+          } else if (index === (current + 1) % items.length) {
+            item.classList.add('right');
+          }
+        });
+      }
+
+      function autoSlide() {
+        current = (current + 1) % items.length;
+        updateCarousel();
+      }
+
+      updateCarousel();
+      setInterval(autoSlide, 3000);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      initCarousel('.hero-carousel');
+      initCarousel('.about-carousel');
+    });
+  </script>
+ </body>
+</html>
